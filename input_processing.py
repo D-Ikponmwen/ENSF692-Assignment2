@@ -1,5 +1,5 @@
 # input_processing.py
-# YOUR NAME, ENSF 692 P24
+# Daniel O. Ikponmwen, ENSF 692 P24
 # A terminal-based program for processing computer vision changes detected by a car.
 # Detailed specifications are provided via the Assignment 2 README file.
 # You must include the code provided below but you may delete the instructional comments.
@@ -22,63 +22,63 @@ class Sensor:
         self.pedestrian = pedestrian
         self. vehicle = vehicle
         
-# S1 = Sensor("green", "yes", "yes")
-# print (S1.pedestrian)
 
     # Replace these comments with your function commenting
 def update_status(sensor): # You may decide how to implement the arguments for this function
     while True:
         try:
-            status = int(input ("Are changes detected in the vision input?\n"
-                "Select 1 for traffic light, 2 for pedestrian, 3 for vehicle or 0 to end the program"))
-            # if status not in [type(str)]:
-            #             raise ValueError("Invalid menu option selected. You must select 1, 2, 3 or 0")
-            #             continue          
-            while (status != 0 ):
-                if (status == 1):
-                    status_light = input("What change has been identified?\n"
-                        "select 'green', 'yellow' or 'red' ")
-                    if status_light not in ["green", "yellow", "red"]:
-                        raise ValueError("Invalid traffic light color")
+            status = input ("Are changes detected in the vision input?\n"
+                "Select 1 for traffic light, 2 for pedestrian, 3 for vehicle or 0 to end the program -->")
+            if status not in ["0", "1", "2", "3"]:
+                        raise ValueError("You must select 1, 2, 3 or 0")
                         continue
-                    sensor.traffic_light = status_light
-                    return sensor.traffic_light
-                    #print ("light is {status_light}")
+            status = int (status)
+                     
+            if(status == 0 ):
+                print("\nExiting the program, Goodbye!\n")
+                break
+            if (status == 1):
+                status_light = input("What change has been identified?\n"
+                        "select 'green', 'yellow' or 'red'--> ")
+                if status_light not in ["green", "yellow", "red"]:
+                    raise ValueError("Invalid vision input")
+                    continue
+                sensor.traffic_light = status_light
+                
                     
-                elif (status == 2):
-                    status_pedestrian = input("What change has been identified?\n"
-                        "select 'yes' if there is a pedestrian and 'no' if there is no pedestrian ")
-                    if status_pedestrian.lower() not in ["yes", "no",]:
-                        raise ValueError("Invalid answer")
-                        continue
-                    sensor.pedestrian = status_pedestrian
-                    return sensor.pedestrian
+            elif (status == 2):
+                status_pedestrian = input("What change has been identified?\n"
+                        "select 'yes' if there is a pedestrian and 'no' if there is no pedestrian -->").lower()
+                if status_pedestrian not in ["yes", "no",]:
+                    raise ValueError("Invalid vision input")
+                    continue
+                sensor.pedestrian = status_pedestrian
+                
 
+            elif (status == 3):
+                status_vehicle = input("What change has been identified?\n"
+                        "select 'yes' if there is a vehicle and 'no' if there is no vehicle --> ").lower()
+                if status_vehicle not in ["yes", "no",]:
+                    raise ValueError("Invalid vision input")
+                    continue
+                sensor.vehicle = status_vehicle
 
-                    #print ("pedestrian is {status_pedestrian}")
-
-                elif (status == 3):
-                    status_vehicle = input("What change has been identified?\n"
-                        "select 'yes' if there is a vehicle and 'no' if there is no vehicle ")
-                    if status_vehicle.lower() not in ["yes", "no",]:
-                        raise ValueError("Invalid answer")
-                        continue
-                    sensor.vehicle = status_vehicle
-                    return sensor.vehicle
+            print_message(sensor)
                     
                     #print ("vehicle is {status_vehicle}")
-                else:
-                    if status not in ["1","2","3","0"]:
-                        raise ValueError("Invalid answer. You must select 1, 2, 3 or 0")
-                        continue
-                    #status_error = print ("you must select 1, 2, 3 or 0")
-                    break
-            print("Exiting the program, Goodbye!")
-            break
-                
+            # else:
+            #     if status not in ["1","2","3","0"]:
+            #         raise ValueError("Invalid answer. You must select 1, 2, 3 or 0")
+            #         continue
+            # #         #status_error = print ("you must select 1, 2, 3 or 0")
+            # #         break
+           
         except ValueError as e:
-        #    print(type(e))
-           print (f" Error: {e}. Please try again.")
+            print(f"\n {e} \n") 
+                 
+         
+
+
        
 
 
@@ -88,11 +88,22 @@ def update_status(sensor): # You may decide how to implement the arguments for t
 # Replace these comments with your function commenting
 def print_message(sensor):
     if sensor.traffic_light == "red" or sensor.pedestrian =="yes" or sensor.vehicle=="yes" :
-        return "STOP"
-    elif sensor.traffic_light == "green":
-        return "Proceed"
-    elif sensor.traffic_light == "yellow":
-        return "Caution"
+        print("\nSTOP\n")
+        print (f"Light = {sensor.traffic_light}, Pedestrian = {sensor.pedestrian},\
+           Vehicle = {sensor.vehicle}\n")
+        
+
+    elif sensor.traffic_light == "green" and sensor.pedestrian == "no" and sensor.vehicle =="no":
+        print ("\nProceed\n")
+        print (f"Light = {sensor.traffic_light}, Pedestrian = {sensor.pedestrian},\
+           Vehicle = {sensor.vehicle}\n")
+        
+        
+    elif sensor.traffic_light == "yellow" and sensor.pedestrian == "no" and sensor.vehicle =="no":
+        print ("\nCaution\n")
+        print (f"Light = {sensor.traffic_light}, Pedestrian = {sensor.pedestrian},\
+           Vehicle = {sensor.vehicle}\n") 
+       
     
 
 
@@ -101,13 +112,7 @@ def main():
     print("\n***ENSF 692 Car Vision Detector Processing Program***\n")
     sensor = Sensor()
     update_status(sensor)
-    action_message = print_message(sensor)
-    print ("\n")
-    print (action_message)
-    print (f"Traffic Light color is: {sensor.traffic_light.capitalize()}")
-    print (f"Pedestrian present: {sensor.pedestrian.capitalize()}")
-    print (f"Vehicle present: {sensor.vehicle.capitalize()}")
-   
+ 
 
 
 
